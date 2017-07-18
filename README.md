@@ -1,3 +1,8 @@
+[![Build Status](https://travis-ci.org/lucasmedeirosleite/ex_napster.svg?branch=master)](https://travis-ci.org/lucasmedeirosleite/ex_napster) &nbsp;
+![License MIT](https://go-shields.herokuapp.com/license-MIT-blue.png)
+
+
+
 # ExNapster
 
 An Elixir wrapper for the Napster Web API.
