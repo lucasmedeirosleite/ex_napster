@@ -14,7 +14,12 @@ defmodule ExNapster.Mixfile do
      start_permanent: Mix.env == :prod,
      deps: deps(),
      package: package(),
-     preferred_cli_env: [espec: :test],
+     test_coverage: [tool: ExCoveralls, test_task: "espec"],
+     preferred_cli_env: ["espec": :test,
+                         "coveralls": :test,
+                         "coveralls.detail": :test,
+                         "coveralls.post": :test,
+                         "coveralls.html": :test],
 
      name: @name,
      version: @version,
@@ -36,6 +41,7 @@ defmodule ExNapster.Mixfile do
       {:ex_doc, "~> 0.16.2", only: :dev, runtime: false},
       {:espec, "~> 1.4", only: :test},
       {:credo, "~> 0.8.4", only: [:dev, :test], runtime: false},
+      {:excoveralls, "~> 0.7.1", only: :test},
       {:inch_ex, "~> 0.5.6", only: :docs},
     ]
   end
