@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/lucasmedeirosleite/ex_napster.svg?branch=master)](https://travis-ci.org/lucasmedeirosleite/ex_napster) &nbsp;
+[![Coverage Status](https://coveralls.io/repos/github/lucasmedeirosleite/ex_napster/badge.svg?branch=master)](https://coveralls.io/github/lucasmedeirosleite/ex_napster?branch=master)
 ![License MIT](https://go-shields.herokuapp.com/license-MIT-blue.png)
 
 

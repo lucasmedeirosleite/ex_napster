@@ -18,13 +18,8 @@ sudo: false
 env:
   - MIX_ENV=test
 
-addons:
-  code_climate:
-    repo_token: 2120e266d5969f168d56e07cc00c90750fe5dae4b544e0ba20657ac5bd6e077b
-
 script:
   - mix deps.get
-  - mix compile
   - mix espec
   - mix coveralls.travis
 
