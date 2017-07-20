@@ -15,6 +15,10 @@ matrix:
 
 sudo: false
 
+addons:
+  code_climate:
+    repo_token: a0279c93071085c527e91c45c5bd604b991a845b1936b7a75ca1f3bc3b45338e
+
 env:
   - MIX_ENV=test
 
