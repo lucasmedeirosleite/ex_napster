@@ -14,6 +14,7 @@ defmodule ExNapster.Mixfile do
      start_permanent: Mix.env == :prod,
      deps: deps(),
      package: package(),
+     preferred_cli_env: [espec: :test],
 
      name: @name,
      version: @version,
@@ -27,11 +28,13 @@ defmodule ExNapster.Mixfile do
   def application do
     [extra_applications: [:logger, :httpoison]]
   end
+
   defp deps do
     [
       {:poison, "~> 3.1"},
       {:httpoison, "~> 0.12.0"},
       {:ex_doc, "~> 0.16.2", only: :dev, runtime: false},
+      {:espec, "~> 1.4", only: :test},
       {:credo, "~> 0.8.4", only: [:dev, :test], runtime: false},
       {:inch_ex, "~> 0.5.6", only: :docs},
     ]
