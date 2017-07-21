@@ -1,0 +1,29 @@
+[
+  {
+    "request": {
+      "body": "",
+      "headers": {
+        "apikey": "ZTk2YjY4MjMtMDAzYy00MTg4LWE2MjYtZDIzNjJmMmM0YTdm",
+        "Accept": "application/json"
+      },
+      "method": "get",
+      "options": [],
+      "request_body": "",
+      "url": "https://api.napster.com/v2.2/artistsss/top"
+    },
+    "response": {
+      "body": "{\"code\":\"ResourceNotFound\",\"message\":\"/artistsss/top does not exist\"}",
+      "headers": {
+        "Content-Type": "application/json; charset=utf-8",
+        "Content-Length": "69",
+        "Status": "404 Not Found",
+        "X-Powered-By": "Phusion Passenger 5.0.30",
+        "Server": "nginx/1.10.1 + Phusion Passenger 5.0.30",
+        "Date": "Fri, 21 Jul 2017 02:39:39 GMT",
+        "Connection": "keep-alive"
+      },
+      "status_code": 404,
+      "type": "ok"
+    }
+  }
+]

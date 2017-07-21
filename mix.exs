@@ -16,6 +16,10 @@ defmodule ExNapster.Mixfile do
      package: package(),
      test_coverage: [tool: ExCoveralls, test_task: "espec"],
      preferred_cli_env: ["espec": :test,
+                         "vcr": :test,
+                         "vcr.show": :test,
+                         "vcr.check": :test,
+                         "vcr.delete": :test,
                          "coveralls": :test,
                          "coveralls.detail": :test,
                          "coveralls.post": :test,
@@ -38,11 +42,14 @@ defmodule ExNapster.Mixfile do
     [
       {:poison, "~> 3.1"},
       {:httpoison, "~> 0.12.0"},
+
       {:ex_doc, "~> 0.16.2", only: :dev, runtime: false},
       {:espec, "~> 1.4", only: :test},
       {:credo, "~> 0.8.4", only: [:dev, :test], runtime: false},
+      {:exjsx, "~> 3.2", only: [:dev, :test, :docs]},
       {:excoveralls, "~> 0.7.1", only: :test},
       {:inch_ex, "~> 0.5.6", only: :docs},
+      {:exvcr, "~> 0.8.11", only: :test}
     ]
   end
 
