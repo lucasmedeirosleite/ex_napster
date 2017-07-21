@@ -1,4 +1,4 @@
-defmodule ExNapster.Metadata.Artist do
+defmodule ExNapster.Metadata.Artists do
   @moduledoc """
     Module responsible to handle the Napster Web API metadata
     related to Artists
