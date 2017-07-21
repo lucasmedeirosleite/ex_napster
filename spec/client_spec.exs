@@ -34,9 +34,10 @@ defmodule ClientSpec do
       context "when status code greater than 204" do
         it "returns an error" do
           use_cassette "errors/not_found" do
-            {status, _} = Client.get("artistsss/top")
+            {status, response} = Client.get("artistsss/top")
 
             expect(status).to eq(:error)
+            expect(response).to have_key("http_status_code")
           end
         end
       end

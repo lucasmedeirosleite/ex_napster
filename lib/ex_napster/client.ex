@@ -37,7 +37,11 @@ defmodule ExNapster.Client do
 
   defp handle_response({:ok, %{status_code: status, body: body}})
   when is_integer(status) and status > 204 do
-    {:error, Poison.Parser.parse!(body)}
+    response =
+      Poison.Parser.parse!(body)
+      |> Map.put("http_status_code", status)
+
+    {:error, response}
   end
 
   defp handle_response({:error, error}), do: {:error, error}
