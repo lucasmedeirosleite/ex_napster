@@ -40,6 +40,42 @@ defmodule ArtistsSpec do
           end)
         end
       end
+
+      it "limits the return to 1" do
+        use_cassette "artists/top_with_limit_1" do
+          {:ok, artists} = Artists.top(limit: 1)
+
+          expect(artists).to have_count(1)
+
+          artist = List.first(artists)
+
+          expect(artist).to be_struct Artist
+        end
+      end
+
+      it "offsets the return by one page" do
+        use_cassette "artists/top_without_params" do
+          {:ok, artists} = top_artists()
+
+          use_cassette "artists/top_with_offset_2" do
+            {:ok, offset_artists} = Artists.top(offset: 2)
+
+            expect(artists).not_to eq(offset_artists)
+          end
+        end
+      end
+
+      it "changes the frequency of artists" do
+        use_cassette "artists/top_without_params" do
+          {:ok, artists} = top_artists()
+
+          use_cassette "artists/top_weekly" do
+            {:ok, week_artists} = Artists.top(range: :week)
+
+            expect(artists).not_to eq(week_artists)
+          end
+        end
+      end
     end
   end
 end

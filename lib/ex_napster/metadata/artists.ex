@@ -30,9 +30,16 @@ defmodule ExNapster.Metadata.Artists do
   @doc """
   Returns an optionally paged list of the top artists across all of Napster,
   driven by listening activity.
+
+  ## Params
+
+  - limit: It limits the total artists return (default: 20)
+  - offset: Use for pagination (default: 0)
+  - range: Defines the frequency of top artists, values are: week, month, year and life (default: month)
+  
   """
-  def top(_params \\ []) do
-    with {:ok, response} <- Client.get(@top_artists),
+  def top(params \\ []) do
+    with {:ok, response} <- Client.get(@top_artists, params),
          {:ok, artists}  <- Map.fetch(response, "artists") do
 
       artists = for artist <- artists, do: transform_to_artist(artist)
