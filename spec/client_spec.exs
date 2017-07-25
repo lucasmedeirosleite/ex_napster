@@ -4,11 +4,6 @@ defmodule ClientSpec do
 
   alias ExNapster.Client
 
-  before_all do
-    ExVCR.Config.cassette_library_dir("spec/cassettes")
-    HTTPoison.start
-  end
-
   describe ExNapster.Client do
     describe "ExNapster.Client.get/2" do
       context "when status code between 200 and 204" do
