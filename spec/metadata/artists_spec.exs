@@ -5,6 +5,10 @@ defmodule ArtistsSpec do
   alias ExNapster.Metadata.Artists
   alias ExNapster.Metadata.Models.Artist
 
+  before_all do
+    ExVCR.Config.cassette_library_dir("spec/cassettes")
+  end
+
   describe Artists do
     describe "ExNapster.Metadata.Artists.top/2" do
       subject :top_artists, do: Artists.top

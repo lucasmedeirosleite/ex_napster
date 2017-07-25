@@ -4,7 +4,6 @@ ESpec.configure fn(config) ->
   ]
 
   config.before fn(tags) ->
-    ExVCR.Config.cassette_library_dir("spec/cassettes")
     {:shared, tags: tags}
   end
 
