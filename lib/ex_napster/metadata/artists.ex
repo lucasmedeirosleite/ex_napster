@@ -9,7 +9,7 @@ defmodule ExNapster.Metadata.Models.Artist do
     * :id                 - the artist id
     * :name               - the artist name
     * :bios               - an array of artist biographies
-    * :blurb              - an array of artist blurb
+    * :blurbs             - an array of artist blurb
     * :shortcut           - the artist name shortcut
     * :albums_ids         - the ids of the artist's albums
     * :genres_ids         - the ids of the artist's genres
@@ -20,7 +20,7 @@ defmodule ExNapster.Metadata.Models.Artist do
   defstruct id: "",
             name: "",
             bios: [],
-            blurb: [],
+            blurbs: [],
             shortcut: "",
             albums_ids: [],
             genres_ids: [],
@@ -80,22 +80,39 @@ defmodule ExNapster.Metadata.Artists do
   end
 
   defp transform_to_artist(artist_map) do
-    %Artist{
-      id:                 artist_map["id"],
-      name:               artist_map["name"],
-      bios:               extract_bios(artist_map["bios"]),
-      blurb:              artist_map["blurb"],
-      shortcut:           artist_map["shortcut"],
-      albums_ids:         extract_albums(artist_map["albumGroups"]),
-      genres_ids:         extract_genres(artist_map["links"]),
-      stations_ids:       extract_stations(artist_map["links"]),
-      influences_ids:     extract_influences(artist_map["links"]),
-      contemporaries_ids: extract_contemporaries(artist_map["links"])
-    }
+    with {:ok, id}                 <- Map.fetch(artist_map, "id"),
+         {:ok, name}               <- Map.fetch(artist_map, "name"),
+         {:ok, blurbs}             <- Map.fetch(artist_map, "blurbs"),
+         {:ok, bios_map}           <- Map.fetch(artist_map, "bios"),
+         {:ok, bios}               <- extract_bios(bios_map),
+         {:ok, shortcut}           <- Map.fetch(artist_map, "shortcut"),
+         {:ok, albums_group}       <- Map.fetch(artist_map, "albumGroups"),
+         {:ok, albums_ids}         <- extract_albums(albums_group),
+         {:ok, links}              <- Map.fetch(artist_map, "links"),
+         {:ok, genres_ids}         <- extract_from(links, "genres"),
+         {:ok, stations_ids}       <- extract_from(links, "stations"),
+         {:ok, influences_ids}     <- extract_from(links, "influences"),
+         {:ok, contemporaries_ids} <- extract_from(links, "contemporaries") do
+
+      %Artist{
+        id:                 id,
+        name:               name,
+        bios:               bios,
+        blurbs:             blurbs,
+        shortcut:           shortcut,
+        albums_ids:         albums_ids,
+        genres_ids:         genres_ids,
+        stations_ids:       stations_ids,
+        influences_ids:     influences_ids,
+        contemporaries_ids: contemporaries_ids
+      }
+    else _ ->
+      %Artist{}
+    end
   end
 
   defp extract_bios(bios_map) do
-    for bio <- bios_map do
+    bios = for bio <- bios_map, into: [] do
       %Biography{
         title: bio["title"],
         author: bio["author"],
@@ -103,15 +120,21 @@ defmodule ExNapster.Metadata.Artists do
         description: bio["bio"]
       }
     end
+
+    {:ok, bios}
   end
 
   defp extract_albums(albums_group) do
     albums = for {_key, value} <- albums_group, into: [], do: value
-    List.flatten(albums)
+    {:ok, List.flatten(albums)}
   end
 
-  defp extract_genres(links_map),         do: links_map["genres"]["ids"]
-  defp extract_stations(links_map),       do: links_map["stations"]["ids"]
-  defp extract_influences(links_map),     do: links_map["influences"]["ids"]
-  defp extract_contemporaries(links_map), do: links_map["contemporaries"]["ids"]
+  defp extract_from(links_map, field) do
+    with {:ok, field_map } <- Map.fetch(links_map, field),
+         {:ok, ids}        <- Map.fetch(field_map, "ids") do
+      {:ok, ids}
+    else _ ->
+      {:ok, []}
+    end
+  end
 end

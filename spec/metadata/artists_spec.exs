@@ -30,7 +30,7 @@ defmodule ArtistsSpec do
             expect(artist).to have_key(:id)
             expect(artist).to have_key(:name)
             expect(artist).to have_key(:bios)
-            expect(artist).to have_key(:blurb)
+            expect(artist).to have_key(:blurbs)
             expect(artist).to have_key(:shortcut)
             expect(artist).to have_key(:albums_ids)
             expect(artist).to have_key(:genres_ids)
