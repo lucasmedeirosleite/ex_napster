@@ -55,7 +55,8 @@ defmodule ExNapster.Metadata.Artists do
   alias ExNapster.Metadata.Models.Artist
   alias ExNapster.Metadata.Models.Biography
 
-  @top_artists "artists/top"
+  @artists "artists"
+  @top_artists "#{@artists}/top"
 
   @doc """
   Returns an optionally paged list of the top artists across all of Napster,
@@ -69,17 +70,47 @@ defmodule ExNapster.Metadata.Artists do
 
   """
   def top(params \\ []) do
-    with {:ok, response} <- Client.get(@top_artists, params),
-         {:ok, artists}  <- Map.fetch(response, "artists") do
+    @top_artists
+    |> handle_call(params)
+    |> handle_response
+  end
 
-      artists = for artist <- artists, do: transform_to_artist(artist)
-      {:ok, artists}
-    else {:error, _} ->
-      :error
+  @doc """
+  Returns the Artist who contains the passed id, or a list of Artists if an array
+  of ids is passed.
+
+  ## Params
+
+  - id: an Artist id or an array of Artist ids
+  """
+  def by_id(id) when is_binary(id) do
+    "#{@artists}/#{id}"
+    |> handle_call
+    |> handle_response
+    |> nillify
+  end
+
+  def by_id(ids) when is_list(ids) do
+    ids = Enum.join(ids, ",")
+
+    "#{@artists}/#{ids}"
+    |> handle_call
+    |> handle_response
+  end
+
+  defp handle_call(action, params \\ []) do
+    case Client.get(action, params) do
+      {:ok, response} ->
+        {:ok, response["artists"] || []}
+
+      {:error, response} ->
+        {:error, response}
     end
   end
 
-  defp transform_to_artist(artist_map) do
+  defp transform_to_artist([]), do: []
+
+  defp transform_to_artist([artist_map]) do
     with {:ok, id}                 <- Map.fetch(artist_map, "id"),
          {:ok, name}               <- Map.fetch(artist_map, "name"),
          {:ok, blurbs}             <- Map.fetch(artist_map, "blurbs"),
@@ -107,8 +138,12 @@ defmodule ExNapster.Metadata.Artists do
         contemporaries_ids: contemporaries_ids
       }
     else _ ->
-      %Artist{}
+      nil
     end
+  end
+
+  defp transform_to_artist(artists_map) when is_list(artists_map) do
+    for artist <- artists_map, do: transform_to_artist([artist])
   end
 
   defp extract_bios(bios_map) do
@@ -137,4 +172,17 @@ defmodule ExNapster.Metadata.Artists do
       {:ok, []}
     end
   end
+
+  defp handle_response(response) do
+    case response do
+      {:ok, artists_map} ->
+        artists = artists_map |> transform_to_artist
+        {:ok, artists}
+      {:error, response} ->
+        {:error, response}
+    end
+  end
+
+  defp nillify({:ok, []}), do: {:error, :not_found}
+  defp nillify({:ok, converted}), do: {:ok, converted}
 end

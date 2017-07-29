@@ -43,11 +43,7 @@ defmodule ArtistsSpec do
 
       it "limits the return to 1" do
         use_cassette "artists/top_with_limit_1" do
-          {:ok, artists} = Artists.top(limit: 1)
-
-          expect(artists).to have_count(1)
-
-          artist = List.first(artists)
+          {:ok, artist} = Artists.top(limit: 1)
 
           expect(artist).to be_struct Artist
         end
@@ -73,6 +69,47 @@ defmodule ArtistsSpec do
             {:ok, week_artists} = Artists.top(range: :week)
 
             expect(artists).not_to eq(week_artists)
+          end
+        end
+      end
+    end
+
+    describe "ExNapster.Metadata.Artists.by_id/1" do
+      subject :artists_by_id, do: Artists.by_id(artist_id())
+
+      context "with one artist id" do
+        let :artist_id, do: "Art.28463069"
+
+        it "returns an artist" do
+          use_cassette "artists/one_artist" do
+            {:ok, artist} = artists_by_id()
+
+            expect(artist).to be_struct Artist
+          end
+        end
+      end
+
+      context "with more than on artist id" do
+        let :artist_id, do: ["Art.28463069", "Art.7375005"]
+
+        it "returns the artists" do
+          use_cassette "artists/two_artists" do
+            {:ok, artists} = artists_by_id()
+
+            expect(artists).to have_count(2)
+            Enum.each(artists, fn(artist) ->
+              expect(artist).to be_struct Artist
+            end)
+          end
+        end
+      end
+
+      context "with no valid artist" do
+        let :artist_id, do: "ashashsa"
+
+        it "returns an error" do
+          use_cassette "artists/no_valid_artist_for_id" do
+            expect(artists_by_id()).to eq({:error, :not_found})
           end
         end
       end
