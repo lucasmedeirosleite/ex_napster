@@ -1,0 +1,37 @@
+[
+  {
+    "request": {
+      "body": "",
+      "headers": {
+        "apikey": "ZTk2YjY4MjMtMDAzYy00MTg4LWE2MjYtZDIzNjJmMmM0YTdm",
+        "Accept": "application/json"
+      },
+      "method": "get",
+      "options": [],
+      "request_body": "",
+      "url": "https://api.napster.com/v2.2/artists/Art.28463069/images"
+    },
+    "response": {
+      "body": "{\"images\":[{\"type\":\"image\",\"id\":\"img.256186702\",\"url\":\"http://static.rhap.com/img/356x237/2/4/1/5/9035142_356x237.jpg\",\"contentId\":\"Art.28463069\",\"width\":356,\"height\":237,\"isDefault\":true,\"version\":0,\"imageType\":\"displayImage\"},{\"type\":\"image\",\"id\":\"img.256186701\",\"url\":\"http://static.rhap.com/img/150x100/2/4/1/5/9035142_150x100.jpg\",\"contentId\":\"Art.28463069\",\"width\":150,\"height\":100,\"isDefault\":true,\"version\":0,\"imageType\":\"displayImage\"},{\"type\":\"image\",\"id\":\"img.256186699\",\"url\":\"http://static.rhap.com/img/70x47/2/4/1/5/9035142_70x47.jpg\",\"contentId\":\"Art.28463069\",\"width\":70,\"height\":47,\"isDefault\":true,\"version\":0,\"imageType\":\"displayImage\"},{\"type\":\"image\",\"id\":\"img.256186698\",\"url\":\"http://static.rhap.com/img/1500x1000/2/4/1/5/9035142_1500x1000.jpg\",\"contentId\":\"Art.28463069\",\"width\":1500,\"height\":1000,\"isDefault\":true,\"version\":0,\"imageType\":\"displayImage\"}],\"meta\":{\"totalCount\":null,\"returnedCount\":4}}",
+      "headers": {
+        "Content-Type": "application/json; charset=utf-8",
+        "Content-Length": "925",
+        "Status": "200 OK",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Api-Version, Request-Id, Response-Time",
+        "Server": "Rhapsody",
+        "Request-Id": "a6f46631-335c-4736-a4ff-3f67d4c4d136",
+        "Response-Time": "87",
+        "Access-Control-Allow-Headers": "Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, Api-Version, Response-Time",
+        "Access-Control-Allow-Methods": "GET",
+        "Content-MD5": "CsdIDv8AKKuEnk63t5FRcg==",
+        "X-Powered-By": "Phusion Passenger 5.0.30",
+        "Cache-Control": "public, max-age=6458",
+        "Date": "Tue, 01 Aug 2017 02:26:35 GMT",
+        "Connection": "keep-alive"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]

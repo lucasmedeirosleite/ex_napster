@@ -4,6 +4,7 @@ defmodule ArtistsSpec do
 
   alias ExNapster.Metadata.Artists
   alias ExNapster.Metadata.Models.Artist
+  alias ExNapster.Metadata.Models.Image
 
   before_all do
     ExVCR.Config.cassette_library_dir("spec/cassettes")
@@ -110,6 +111,43 @@ defmodule ArtistsSpec do
         it "returns an error" do
           use_cassette "artists/no_valid_artist_for_id" do
             expect(artists_by_id()).to eq({:error, :not_found})
+          end
+        end
+      end
+    end
+
+    describe "ExNapster.Metadata.Artists.images/1" do
+      subject :artist_images, do: Artists.images(artist_id())
+
+      context "with valid artist id" do
+        let :artist_id, do: "Art.28463069"
+
+        it "returns all images related to the artist" do
+          use_cassette "artists/artist_images" do
+            {:ok, images} = artist_images()
+
+            Enum.each(images, fn(image) ->
+              expect(image).to be_struct Image
+              expect(image).to have_key(:id)
+              expect(image).to have_key(:url)
+              expect(image).to have_key(:width)
+              expect(image).to have_key(:height)
+              expect(image).to have_key(:version)
+              expect(image).to have_key(:default?)
+              expect(image).to have_key(:image_type)
+            end)
+          end
+        end
+      end
+
+      context "with invalid artist id" do
+        let :artist_id, do: "invalid_id"
+
+        it "returns an empty array of images" do
+          use_cassette "artists/artist_images_from_invalid_id" do
+            {:ok, images} = artist_images()
+
+            expect(images).to be_empty()
           end
         end
       end

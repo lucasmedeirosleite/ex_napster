@@ -6,6 +6,7 @@ defmodule ExNapster.Metadata.Artists do
 
   alias ExNapster.Client
   alias ExNapster.Metadata.Models.Artist
+  alias ExNapster.Metadata.Models.Image
 
   @artists "artists"
   @top_artists "#{@artists}/top"
@@ -50,10 +51,26 @@ defmodule ExNapster.Metadata.Artists do
     |> handle_response
   end
 
+  @doc """
+  Returns a list of licensed images for an artist.
+
+  ## Params
+
+  - artist_id: an Artist id
+  """
+  def images(artist_id) when is_binary(artist_id) do
+    "#{@artists}/#{artist_id}/images"
+    |> handle_call
+    |> handle_response
+  end
+
   defp handle_call(action, params \\ []) do
     case Client.get(action, params) do
-      {:ok, response} ->
-        {:ok, response["artists"] || []}
+      {:ok, %{ "artists" => artists }} ->
+        {:ok, :artists, artists}
+
+      {:ok, %{ "images" => images }} ->
+        {:ok, :images, images}
 
       {:error, response} ->
         {:error, response}
@@ -62,9 +79,14 @@ defmodule ExNapster.Metadata.Artists do
 
   defp handle_response(response) do
     case response do
-      {:ok, artists_map} ->
+      {:ok, :artists, artists_map} ->
         artists = artists_map |> Artist.convert
         {:ok, artists}
+
+      {:ok, :images, images_map} ->
+        images = images_map |> Image.convert
+        {:ok, images}
+
       {:error, response} ->
         {:error, response}
     end
