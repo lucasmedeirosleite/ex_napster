@@ -16,14 +16,22 @@ matrix:
 
 sudo: false
 
-addons:
-  code_climate:
-    repo_token: a0279c93071085c527e91c45c5bd604b991a845b1936b7a75ca1f3bc3b45338e
+cache:
+ directories:
+   — /home/travis/.rvm/
 
 env:
-  - MIX_ENV=test
+ global:
+   - MIX_ENV=test
+   - PULL_REQUEST_ID=$TRAVIS_PULL_REQUEST
+   - GITHUB_ACCESS_TOKEN=8566991b3715e4812b975ad64a6065aef494a844
+
+before_script:
+  - rvm install ruby-2.4.1
+  - gem install pronto-credo --no-ri --no-rdoc
 
 script:
+  - if [ $PULL_REQUEST_ID != false ]; then pronto run -f github_pr; fi
   - mix deps.get
   - mix espec
   - mix coveralls.travis

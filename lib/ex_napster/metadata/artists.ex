@@ -99,7 +99,7 @@ defmodule ExNapster.Metadata.Artists do
       {:ok, :artists, artists_map} ->
         {:ok, Artist.convert(artists_map)}
 
-      {:ok, :images, images_map} ->
+      {:ok, :images, images_map } ->
         {:ok, Image.convert(images_map)}
 
       {:ok, :albums, albums_map} ->
