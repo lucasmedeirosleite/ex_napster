@@ -3,8 +3,9 @@ defmodule ArtistsSpec do
   use ExVCR.Mock, adapter: ExVCR.Adapter.Hackney
 
   alias ExNapster.Metadata.Artists
-  alias ExNapster.Metadata.Models.Artist
   alias ExNapster.Metadata.Models.Image
+  alias ExNapster.Metadata.Models.Album
+  alias ExNapster.Metadata.Models.Artist
 
   describe Artists do
     describe "ExNapster.Metadata.Artists.top/2" do
@@ -147,6 +148,39 @@ defmodule ArtistsSpec do
           end
         end
       end
+    end
+
+    describe "ExNapster.Metadata.Artists.discography/2" do
+      subject :discography, do: Artists.discography(artist(), params())
+
+      context "with valid artist_id" do
+        let :artist, do: "Art.28463069"
+        let :params, do: []
+
+        it "limits to 20 albums" do
+          use_cassette("albums/artist_discography") do
+            {:ok, albums} = discography()
+
+            expect(albums).to have_count(20)
+          end
+        end
+
+        it "returns the artist discography" do
+          use_cassette("albums/artist_discography") do
+            {:ok, albums} = discography()
+
+            Enum.each(albums, fn(album) ->
+              expect(album).to be_struct Album
+            end)
+          end
+        end
+      end
+
+      context "with valid artist_id with params"
+
+      context "with more than one artist_id"
+
+      context "with invalid artist_id"
     end
   end
 end

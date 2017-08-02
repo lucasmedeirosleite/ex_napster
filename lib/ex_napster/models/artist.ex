@@ -79,8 +79,8 @@ defmodule ExNapster.Metadata.Models.Artist do
   end
 
   defp extract_from(links_map, field) do
-    with {:ok, field_map } <- Map.fetch(links_map, field),
-         {:ok, ids}        <- Map.fetch(field_map, "ids") do
+    with {:ok, field_map} <- Map.fetch(links_map, field),
+         {:ok, ids}       <- Map.fetch(field_map, "ids") do
       {:ok, ids}
     else _ ->
       {:ok, []}

@@ -5,11 +5,11 @@ defmodule ExNapster.Metadata.Artists do
   """
 
   alias ExNapster.Client
-  alias ExNapster.Metadata.Models.Artist
+  alias ExNapster.Metadata.Models.Album
   alias ExNapster.Metadata.Models.Image
+  alias ExNapster.Metadata.Models.Artist
 
   @artists "artists"
-  @top_artists "#{@artists}/top"
 
   @doc """
   Returns an optionally paged list of the top artists across all of Napster,
@@ -23,7 +23,7 @@ defmodule ExNapster.Metadata.Artists do
 
   """
   def top(params \\ []) do
-    @top_artists
+    "#{@artists}/top"
     |> handle_call(params)
     |> handle_response
   end
@@ -64,13 +64,30 @@ defmodule ExNapster.Metadata.Artists do
     |> handle_response
   end
 
+  @doc """
+  Returns the artist's full discography, sorted descendingly by release date.
+
+  ## Params
+
+  - limit: It limits the total of returned albums (default: 20)
+  - offset: Use for pagination (default: 0)
+  """
+  def discography(artist_id, params \\ []) do
+    "#{@artists}/#{artist_id}/albums"
+    |> handle_call(params)
+    |> handle_response
+  end
+
   defp handle_call(action, params \\ []) do
     case Client.get(action, params) do
-      {:ok, %{ "artists" => artists }} ->
+      {:ok, %{"artists" => artists}} ->
         {:ok, :artists, artists}
 
-      {:ok, %{ "images" => images }} ->
+      {:ok, %{"images" => images}} ->
         {:ok, :images, images}
+
+      {:ok, %{"albums" => albums}} ->
+        {:ok, :albums, albums}
 
       {:error, response} ->
         {:error, response}
@@ -80,12 +97,13 @@ defmodule ExNapster.Metadata.Artists do
   defp handle_response(response) do
     case response do
       {:ok, :artists, artists_map} ->
-        artists = artists_map |> Artist.convert
-        {:ok, artists}
+        {:ok, Artist.convert(artists_map)}
 
       {:ok, :images, images_map} ->
-        images = images_map |> Image.convert
-        {:ok, images}
+        {:ok, Image.convert(images_map)}
+
+      {:ok, :albums, albums_map} ->
+        {:ok, Album.convert(albums_map)}
 
       {:error, response} ->
         {:error, response}

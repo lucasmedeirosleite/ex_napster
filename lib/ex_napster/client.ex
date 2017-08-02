@@ -33,9 +33,7 @@ defmodule ExNapster.Client do
     |> handle_response
   end
 
-  defp request_url(action, params) do
-    "#{@api_url}/#{action}" |> encode_params(params)
-  end
+  defp request_url(action, params), do: encode_params("#{@api_url}/#{action}", params)
 
   defp encode_params(url, []), do: url
   defp encode_params(url, params) do
@@ -54,9 +52,8 @@ defmodule ExNapster.Client do
 
   defp handle_response({:ok, %{status_code: status, body: body}})
   when is_integer(status) and status > 204 do
-    response =
-      Poison.Parser.parse!(body)
-      |> Map.put("http_status_code", status)
+    body = Poison.Parser.parse!(body)
+    response = Map.put(body, "http_status_code", status)
 
     {:error, response}
   end
