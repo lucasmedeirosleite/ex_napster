@@ -26,8 +26,8 @@
         "Access-Control-Allow-Methods": "GET",
         "Content-MD5": "Q5LpVALF64ciAX8y8wXrgg==",
         "X-Powered-By": "Phusion Passenger 5.0.30",
-        "Cache-Control": "public, max-age=14389",
-        "Date": "Thu, 03 Aug 2017 23:33:43 GMT",
+        "Cache-Control": "public, max-age=14390",
+        "Date": "Thu, 03 Aug 2017 23:33:42 GMT",
         "Connection": "keep-alive"
       },
       "status_code": 200,

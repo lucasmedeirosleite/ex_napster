@@ -8,7 +8,7 @@ defmodule ClientSpec do
     describe "ExNapster.Client.get/2" do
       context "when status code between 200 and 204" do
         it "returns a valid response" do
-          use_cassette "artists/top_without_params" do
+          use_cassette "client/top_artists_without_params" do
             {:ok, response} = Client.get("artists/top")
 
             expect(response).to have_key("artists")
@@ -17,7 +17,7 @@ defmodule ClientSpec do
         end
 
         it "returns a valid response with params" do
-          use_cassette "artists/top_with_params" do
+          use_cassette "client/top_artists_with_params" do
             {:ok, response} = Client.get("artists/top", limit: 5)
 
             expect(response).to have_key("artists")
@@ -28,7 +28,7 @@ defmodule ClientSpec do
 
       context "when status code greater than 204" do
         it "returns an error" do
-          use_cassette "errors/not_found" do
+          use_cassette "client/errors/not_found" do
             {status, response} = Client.get("artistsss/top")
 
             expect(status).to eq(:error)

@@ -1,0 +1,37 @@
+[
+  {
+    "request": {
+      "body": "",
+      "headers": {
+        "apikey": "ZTk2YjY4MjMtMDAzYy00MTg4LWE2MjYtZDIzNjJmMmM0YTdm",
+        "Accept": "application/json"
+      },
+      "method": "get",
+      "options": [],
+      "request_body": "",
+      "url": "https://api.napster.com/v2.2/artists/balasjldaj/albums"
+    },
+    "response": {
+      "body": "{\"artists\":[],\"meta\":{\"returnedCount\":0,\"totalCount\":null}}",
+      "headers": {
+        "Content-Type": "application/json; charset=utf-8",
+        "Content-Length": "59",
+        "Status": "200 OK",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Api-Version, Request-Id, Response-Time",
+        "Server": "Rhapsody",
+        "Request-Id": "6f28a4e6-6e25-407b-8b75-d77936808575",
+        "Response-Time": "6",
+        "Access-Control-Allow-Headers": "Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, Api-Version, Response-Time",
+        "Access-Control-Allow-Methods": "GET",
+        "Content-MD5": "lVyB1awWu4lXiIU2Ao0UQA==",
+        "X-Powered-By": "Phusion Passenger 5.0.30",
+        "Cache-Control": "public, max-age=14384",
+        "Date": "Thu, 03 Aug 2017 23:30:25 GMT",
+        "Connection": "keep-alive"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]

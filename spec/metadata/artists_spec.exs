@@ -193,11 +193,51 @@ defmodule ArtistsSpec do
         end
       end
 
-      context "with valid artist_id with params"
+      context "with valid artist_id with params" do
+        let :artist, do: "Art.28463069"
+        let :params, do: [limit: 5, offset: 2]
 
-      context "with more than one artist_id"
+        it "returns the artist discography filtered with params" do
+          use_cassette("albums/artist_discography_with_params") do
+            {:ok, albums} = discography()
 
-      context "with invalid artist_id"
+            expect(albums).to have_count(5)
+            Enum.each(albums, fn(album)->
+              expect(album).to be_struct Album
+            end)
+          end
+        end
+      end
+
+      context "with more than one artist_id" do
+        let :artist, do: ["Art.28463069", "Art.7375005"]
+        let :params, do: []
+
+        it "returns the artists discography" do
+          use_cassette("albums/artists_discography") do
+            {:ok, albums} = discography()
+
+            expect(Enum.count(albums)).to be(:>=, 0)
+
+            Enum.each(albums, fn(album)->
+              expect(album).to be_struct Album
+            end)
+          end
+        end
+      end
+
+      context "with invalid artist_id" do
+        let :artist, do: "balasjldaj"
+        let :params, do: []
+
+        it "returns an empty array of albums" do
+          use_cassette("albums/errors/not_found") do
+            {:ok, albums} = discography()
+
+            expect(albums).to be_empty()
+          end
+        end
+      end
     end
   end
 end

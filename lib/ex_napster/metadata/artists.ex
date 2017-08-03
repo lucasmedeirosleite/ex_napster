@@ -72,8 +72,18 @@ defmodule ExNapster.Metadata.Artists do
   - limit: It limits the total of returned albums (default: 20)
   - offset: Use for pagination (default: 0)
   """
-  def discography(artist_id, params \\ []) do
+  def discography(artist, params \\ [])
+
+  def discography(artist_id, params) when is_binary(artist_id) do
     "#{@artists}/#{artist_id}/albums"
+    |> handle_call(params)
+    |> handle_response
+  end
+
+  def discography(artist_ids, params) when is_list(artist_ids) do
+    ids = Enum.join(artist_ids, ",")
+
+    "#{@artists}/#{ids}/albums"
     |> handle_call(params)
     |> handle_response
   end
