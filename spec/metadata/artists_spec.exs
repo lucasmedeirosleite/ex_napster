@@ -171,6 +171,23 @@ defmodule ArtistsSpec do
 
             Enum.each(albums, fn(album) ->
               expect(album).to be_struct Album
+              expect(album).to have_key(:id)
+              expect(album).to have_key(:upc)
+              expect(album).to have_key(:name)
+              expect(album).to have_key(:tags)
+              expect(album).to have_key(:label)
+              expect(album).to have_key(:genres)
+              expect(album).to have_key(:single?)
+              expect(album).to have_key(:shortcut)
+              expect(album).to have_key(:explicit?)
+              expect(album).to have_key(:copyright)
+              expect(album).to have_key(:disc_count)
+              expect(album).to have_key(:streamable?)
+              expect(album).to have_key(:artist_name)
+              expect(album).to have_key(:track_count)
+              expect(album).to have_key(:release_date)
+              expect(album).to have_key(:partner_account)
+              expect(album).to have_key(:originally_released)
             end)
           end
         end
